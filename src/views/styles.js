@@ -71,6 +71,16 @@ export const useStyles = makeStyles ((theme) => ({
         minWidth: 120,
         //marginTop:"50px",
     },
+    formControlPost: {
+        margin: theme.spacing(1),
+        width: "93%",
+    },
+    header:{
+        position: "sticky",
+        top: 0,
+        zIndex: 100,
+        backgroundColor: "lavender"
+    }
 }));
 
 export const BootstrapInput = withStyles((theme) => ({

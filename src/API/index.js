@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 export const FETCH_JOBS_LIST = gql`
   query jobs($type: String!, $slug: String!){
-      jobs(input: {type: type, slug: $slug}){
+      jobs(input: {type: $type, slug: $slug}){
       title
       id
       description
@@ -35,5 +35,17 @@ mutation postJob ($title: String!, $commitmentId : ID!, $companyName : String!, 
       name
     }
     applyUrl
+    commitment{
+      title
+    }
   }
 }`
+
+export const FETCH_COMMITMENTS_LIST = gql`
+{
+  commitments {
+    title
+    id
+  }
+}
+`

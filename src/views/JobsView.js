@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useCallback} from 'react';
 import {useQuery} from '@apollo/react-hooks'
 import {FETCH_JOBS_LIST} from '../API';
 import {Typography , Card , MenuItem, InputLabel, Select,FormControl, CardActionArea , CardActions , CardContent, CardMedia , Button, IconButton } from '@material-ui/core';
@@ -13,9 +13,9 @@ import image4 from '../assets/card_image3.png';
 import FailedToLoad from '../assets/failedtoload_image.png';
 
 
-export const JobsView = ()=> {
-  const [open, setOpen] = React.useState(false);
-  const [location, setLocation] = React.useState('bangalore');
+export const JobsView = () => {
+  const [open, setOpen] = useState(false);
+  const [location, setLocation] = useState('bangalore');
   const classes = useStyles();
   const history = useHistory();
   const {loading ,error, data, refetch  } = useQuery(FETCH_JOBS_LIST,{ 
@@ -27,10 +27,33 @@ export const JobsView = ()=> {
     image3,
     image4,
     ];
-  // const [expanded, setExpanded] = React.useState(false);
+  
+  // const [expanded, setExpanded] = useState(false);
   // const handleExpandClick = () => {
   //   setExpanded(!expanded);
   // };
+  
+  const handleChange = useCallback((event) => {
+      setLocation(event.target.value);
+      refetch();
+  },[setLocation,refetch]);
+
+  const handleClose = useCallback(() => {
+    setOpen(false);
+  },[setOpen]);
+
+  const handleOpen = useCallback(() => {
+    setOpen(true);
+  },[setOpen]);
+  
+  const handleBackClick = useCallback(() => {
+    history.push("/");
+  },[history]);
+
+  const handleApply = useCallback((applyUrl) => {
+    window.open(applyUrl);
+  },[]);
+
 
   if(loading){
     return <LoadingIcon open={loading}/>
@@ -41,29 +64,9 @@ export const JobsView = ()=> {
   //   return <Error/>;
   // }
 
-  const handleChange = (event) => {
-    setLocation(event.target.value);
-    refetch();
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  
-  const handleBackClick = () => {
-    history.push("/");
-  };
-
-  const handleApply = (applyUrl) => {
-    window.open(applyUrl);
-  }
     return (
       <>
-      <div >
+      <div className={classes.header} >
       <Typography variant="h4" className={classes.typoTheme} align="center"> Jobs View </Typography>
       <IconButton onClick={handleBackClick}>
         <ArrowBackIosIcon/> Back 
@@ -71,7 +74,7 @@ export const JobsView = ()=> {
       </div>
       {!error ? 
       <React.Fragment>
-      <div align="center">
+      <div  align="center">
       <FormControl className={classes.formControl}>
         <InputLabel id="demo-controlled-open-select-label">Location</InputLabel>
         <Select
